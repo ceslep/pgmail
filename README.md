@@ -22,13 +22,26 @@ Reads emails from a specific sender via Gmail API, extracts transaction data, an
 
 See `credentials.json.example` for the expected format.
 
-### 2. Install dependencies
+### 2. Configure environment
+
+Copy `.env.example` to `.env` and edit with your values:
+
+```bash
+cp .env.example .env
+```
+
+```env
+GMAIL_ACCOUNT=your-email@gmail.com
+SENDER_QUERY=from:sender@example.com
+```
+
+### 3. Install dependencies
 
 ```bash
 pip install -r requirements.txt
 ```
 
-### 3. Run
+### 4. Run
 
 **Read emails (general reader):**
 ```bash
@@ -53,6 +66,7 @@ On first run, a browser window opens for OAuth consent. The token is saved local
 pgmail/
 ├── gmail_reader.py          # Gmail API auth & basic email reader
 ├── generate_report.py       # Transaction parser & HTML report generator
+├── .env.example             # Environment config template
 ├── credentials.json.example # Template for OAuth credentials
 ├── requirements.txt         # Python dependencies
 └── .gitignore
@@ -60,7 +74,7 @@ pgmail/
 
 ## Security
 
-`credentials.json` and `token.json` contain OAuth secrets and are excluded via `.gitignore`. **Never commit them.**
+`credentials.json`, `token.json`, and `.env` contain secrets and are excluded via `.gitignore`. **Never commit them.**
 
 ## License
 

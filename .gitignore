@@ -1,6 +1,7 @@
 # Secrets — NEVER commit these
 credentials.json
 token.json
+.env
 
 # Generated output
 transacciones.json

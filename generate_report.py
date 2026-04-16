@@ -1,8 +1,8 @@
 """
-Financial Report Generator — Emails from info@pasarelapagosaval.com
+Financial Report Generator
 
-Fetches all emails, extracts transaction data, saves JSON,
-generates HTML report that reads from JSON.
+Fetches emails matching SENDER_QUERY from .env, extracts transaction data,
+saves JSON, generates HTML report.
 
 Usage:
     python generate_report.py
@@ -16,11 +16,14 @@ import html as html_module
 import webbrowser
 from datetime import datetime
 
+from dotenv import load_dotenv
 from dateutil import parser as dateutil_parser
 from gmail_reader import authenticate
 from googleapiclient.discovery import build
 
-SENDER_QUERY = "from:info@pasarelapagosaval.com"
+load_dotenv()
+
+SENDER_QUERY = os.environ["SENDER_QUERY"]
 OUTPUT_JSON = "transacciones.json"
 OUTPUT_HTML = "informe_financiero.html"
 
@@ -237,7 +240,7 @@ def generate_html(data_json):
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Informe Financiero — Pasarela Pago Aval</title>
+    <title>Informe Financiero</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -352,7 +355,7 @@ def generate_html(data_json):
 
 <div class="header">
     <h1>Informe Financiero</h1>
-    <h2>Transacciones Aprobadas — Pasarela Pago Aval</h2>
+    <h2>Transacciones Aprobadas</h2>
     <div class="meta" id="headerMeta">Cargando datos...</div>
 </div>
 
@@ -441,7 +444,7 @@ async function loadData() {
         // Header meta
         document.getElementById('headerMeta').innerHTML =
             `Cuenta: ${esc(json.email_account)} &nbsp;|&nbsp; ` +
-            `Remitente: info@pasarelapagosaval.com &nbsp;|&nbsp; ` +
+            `Remitente: ${esc(json.sender)} &nbsp;|&nbsp; ` +
             `Generado: ${json.generated_at}`;
 
         // Populate status filter
@@ -627,7 +630,7 @@ def main():
     email_account = profile["emailAddress"]
     print(f"Conectado: {email_account}")
 
-    print(f"\nBuscando emails de info@pasarelapagosaval.com...")
+    print(f"\nBuscando emails: {SENDER_QUERY}...")
     msg_refs = fetch_all_messages(service, SENDER_QUERY)
     print(f"Encontrados: {len(msg_refs)} emails")
 
@@ -670,7 +673,7 @@ def main():
     # Save JSON
     data = {
         "email_account": email_account,
-        "sender": "info@pasarelapagosaval.com",
+        "sender": SENDER_QUERY,
         "generated_at": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         "total_fetched": len(msg_refs),
         "total_approved": len(approved),

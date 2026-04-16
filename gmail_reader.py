@@ -14,10 +14,13 @@ Setup:
 import os
 import base64
 from datetime import datetime
+from dotenv import load_dotenv
 from google.auth.transport.requests import Request
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
+
+load_dotenv()
 
 # Read-only scope
 SCOPES = ["https://www.googleapis.com/auth/gmail.readonly"]
