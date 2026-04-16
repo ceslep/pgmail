@@ -1,5 +1,5 @@
 """
-Gmail Reader - Read emails from ceslep@gmail.com via Gmail API (OAuth2).
+Gmail Reader - Read emails from [EMAIL_ADDRESS] via Gmail API (OAuth2).
 
 Setup:
   1. Go to https://console.cloud.google.com/
@@ -101,7 +101,7 @@ def list_messages(service, query="", max_results=10):
 
 
 def main():
-    print("Authenticating with Gmail (ceslep@gmail.com)...")
+    print("Authenticating with Gmail...")
     creds = authenticate()
     service = build("gmail", "v1", credentials=creds)
 
